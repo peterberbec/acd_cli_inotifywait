@@ -32,7 +32,7 @@ The watch_file is created by setup parsing the user's input. The output of inoti
 
 Once in inw_acd_cli_ul.sh, we do some sanity checks (lock files, correct variables etc) and parse the file into source path & file and destination path. if the file is /data/downloads/totally_not_porn.m4v, we upload it to /downloads/totally_not_porn.m4v. Next we check the last time acd_cli synced. If under 10 minutes, we skip it. 
 
-I then create the directory the file exists in, and all parent directories. It takes just as much time for a failed directory creation as to test if we need to create the directories, so I just do it even if it throws an error. File /data/taxes/2015/Quickbooks/no_way_this_is_porn.fax.mkv makes us create /taxes, /taxes/2015, /taxes/2015 and /taxes/2015/Quickbooks. Anyone who knows a better way to do this, please let me know!
+I then create the directory the file exists in, and all parent directories. It takes just as much time for a failed directory creation as to test if we need to create the directories, so I just do it even if it throws an error. File /data/taxes/2015/Quickbooks/no_way_this_is_porn.fax.mkv makes us create /taxes, /taxes/2015 and /taxes/2015/Quickbooks. Anyone who knows a better way to do this, please let me know!
 
 Once we are sure the file to be uploaded has a directory to land in, we upload the file and parse the output of acd_cli for our log file.
 
