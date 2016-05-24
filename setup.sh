@@ -6,7 +6,6 @@ read -p "Please enter directory inw_acd_cli is installed [$temp_dir] " install_d
 if [ -z $install_dir_cfg ]; then
 	install_dir_cfg=$temp_dir
 fi
-mkdir $install_dir_cfg
 watch_dir=""
 while [ -z $watch_dir ];
 do
