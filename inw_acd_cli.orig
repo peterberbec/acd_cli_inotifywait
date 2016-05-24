@@ -28,7 +28,7 @@ inotifywait --exclude '(/\..+|~$|.tmp$|.log$|.lock$)' --format "%w%f" -qrme clos
 	printf " - %05d/" $PID_MAIN
 	printf "%05d" $(ps -C inotifywait -o pid h)
 	echo -n ": $file"
-	remotepath=`echo $(dirname "${file}") | sed 's:/data::g'`
+	remotepath=`echo $(dirname "${file}") | sed 's:$base_name::g'`
 	bash $install_dir/inw_acd_cli_ul.sh "$file" "$remotepath"
 	rm -f $acd_ul_lock
 done
