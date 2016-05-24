@@ -1,0 +1,36 @@
+lock=$lock_dir/inw_acd_cli.lock
+if [ -e $lock ]; then
+	date +"%Y/%m/%d %T" | tr -d '\n'
+        printf " - %05d" 0
+	echo ": inw_acd_cli.sh already started!"
+	exit
+fi
+trap clean_up SIGHUP SIGINT SIGTERM INT
+clean_up()
+{
+        rm -f $lock
+        date +"%Y/%m/%d %T" | tr -d '\n'
+        printf " - %05d" $PID_MAIN
+        echo ": inw_acd_cli.sh ended"
+        exit
+}
+PID_MAIN=$(($$+1))
+echo $PID_MAIN > $lock
+date +"%Y/%m/%d %T" | tr -d '\n'
+printf " - %05d" $PID_MAIN
+echo ": inw_acd_cli.sh started"
+inotifywait --exclude '(/\..+|~$|.tmp$|.log$|.lock$)' --format "%w%f" -qrme close_write,moved_to --fromfile $watch_file | while read file; do
+	if [ -e $acd_ul_lock ]; then
+		inotifywait -qme delete $acd_ul_lock > /dev/null 2>&1
+	fi
+	touch $acd_ul_lock
+	date +"%Y/%m/%d %T" | tr -d '\n'
+	printf " - %05d/" $PID_MAIN
+	printf "%05d" $(ps -C inotifywait -o pid h)
+	echo -n ": $file"
+	remotepath=`echo $(dirname "${file}") | sed 's:/data::g'`
+	bash $install_dir/inw_acd_cli_ul.sh "$file" "$remotepath"
+	rm -f $acd_ul_lock
+done
+clean_up
+} >> $log_dir/inw_acd_cli.log 2>&1 &

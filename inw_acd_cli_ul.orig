@@ -1,0 +1,88 @@
+lock=$lock_dir/amazon_inotify.lock
+PID=0
+trap clean_up SIGHUP SIGINT SIGTERM INT
+clean_up()
+{
+	if [ $PID -ne 0 ]; then
+		echo "Error!!"
+                killall acd_cli > /dev/null 2>&1
+        fi
+	rm -f $sync_lock
+	rm -f $log_file
+	end_time=`date +"%Y/%m/%d %T" | tr -d '\n'`
+	echo ", Done at $end_time!"
+	exit
+}
+PID_MAIN=$(($$+1))
+if [ $# -ne 2 ]; then
+	echo " need a filename and path only!"
+	exit
+fi
+log_file=$log_dir/upload.$PID_MAIN.log
+filename=$1
+sync_lock=$lock_dir/acd_sync.lock
+destination=$2
+dest_temp=`sed s:/data::g <<< $(dirname "${filename}")`
+if [[ -z "${destination// }" ]]; then
+	destination=`sed s:$base_name::g <<< "$filename"`
+	dest_test=1
+else
+	destination=$dest_temp
+	dest_test=0
+fi
+if [ ! -e "$filename" ]; then
+        rm -f $sync_lock
+        echo " is already gone, probably a temp file."
+        exit
+else
+	size=`du -h --max-depth=0 "$filename" | awk '{ print $1 }'`
+	echo -n " ($size), "
+fi
+if [ ! -e "$sync_lock" ]; then
+	last_sync=$(cat $home_dir/.cache/acd_cli/acd_cli.log | grep "action='sync'" | tail -n 1 | awk '{ print $1 " " $2 }')
+	last_sync=`date -d "$last_sync" +"%s"`
+	cur_time=`date +"%s"`
+	time_diff=$(($cur_time-$last_sync))
+	if [ $time_diff -gt 599 ]; then 	# More than 10 minutes
+		touch $sync_lock
+		acd_cli sync >> $log_file 2>&1 &
+		PID=$!
+		echo -n "Syncing, "
+		wait $PID
+		if [ $? -ne 0 ]; then
+			clean_up 
+		fi
+		PID=0
+		rm -f $sync_lock
+	else
+		: 
+		# echo -n "not syncing ($time_diff secs), " # for debug purposes only
+	fi
+fi
+echo -n "mkdir, "
+acd_cli mkdir --parents "$destination" > $log_file 2>&1 &
+PID=$!
+wait $PID 
+if [[ $dest_test -eq 1 ]]; then
+	acd_cli upload -x 8 "$filename/*" "$destination" >> $log_file 2>&1 &
+	PID=$!
+else
+	acd_cli upload "$filename" "$destination" >> $log_file 2>&1 &
+	PID=$!
+fi
+echo -en "Uploading, \033[s"
+sleep 1 
+while ps -p $PID > /dev/null 2>&1
+do
+	temp=`tail -n 1 $log_file`
+	if [[ ${temp:0:1} == "[" ]]; then
+		time_left=`tail -n 1 $log_file | tail -c 180 | awk '{ print $(NF-5) " " $(NF-1) " " $NF }' | tr -d '\n' | tr -d '\r' 2> /dev/null`
+	        echo -en "\033[u$time_left\033[K"
+	else
+		echo -en "\033[uscanning\033[K"
+	fi
+	sleep 1
+done
+PID=0
+clean_up
+}
