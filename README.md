@@ -8,7 +8,7 @@ I have an alternative: these little scripts.
 We set up an inotifywait watch over our directory (it's /data for me)
 When we detect a file moved into, created in, or modified in this watch directory, we spawn an instance of acd_cli and upload it. I have a queueing system in place, unzip a file and 500,000 processes don't spawn, the go one at a time.
 
-Download the files here into a directory (I use ~/inw_acd_cli). Make the setup.sh file executable (<code>chmod 744 setup.sh</code>). Run setup.sh Answer the prompts, give the script root permissions*. Run inw_acd_cli.sh
+Download the files here into a directory (I use ~/inw_acd_cli). Make the setup.sh file executable (<code>chmod 744 setup.sh</code>). Run setup.sh Answer the prompts, give the script root permissions*. Run <code>inw_acd_cli.sh</code>
 
 To watch activity, <code>tail -f ~/inw_acd_cli/log/inw_acd_cli.log</code>
 
