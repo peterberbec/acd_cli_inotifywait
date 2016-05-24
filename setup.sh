@@ -16,8 +16,17 @@ read -p "Please enter directory to link executable into. [/usr/local/bin] " ln_d
 if [ -z $ln_dir ]; then
 	ln_dir="/usr/local/bin"
 fi
-echo "The following prompt for root permissions is to link the script into /usr/local/bin."
-sudo ln -s $install_dir_cfg/inw_acd_cli.sh /usr/local/bin
+echo "The following prompt for root permissions is to link the script into $ln_dir"
+sudo ln -s "$install_dir_cfg/inw_acd_cli.sh" "$ln_dir"
+echo "Depending on the size of the watched directory, you may need to increase max_user_watches."
+muw_old=`cat /proc/sys/fs/inotify/max_user_watches`
+read -p "Enter new value for max_user_watches. [$muw_old] " m_u_w
+if [ ! -z $m_u_w ]; then
+	echo "need root permissions again, to set this."
+	sudo echo "fs.inotify.max_user_watches=$m_u_w" >> /etc/sysctl.conf
+	echo "need root one last time, make it take effect now."
+	sudo sysctl -p /etc/sysctl.conf
+fi
 echo "Setting config files for $install_dir_cfg. Running the script will"
 echo "watch $watch_dir. Please put any files or directories to be excluded into"
 echo "$install_dir_cfg/inw_acd_cli.watch prefixed by a \@"
@@ -38,6 +47,10 @@ mkdir $install_dir_cfg/.lock
 	echo "$watch_dir"
 	echo "@$install_dir_cfg/.lock"
 	echo "@$install_dir_cfg/.log"
+	echo "@/data/torrents/incomplete" 		#PRB ONLY
+	echo "@/data/torrents/incompletepieces" 	#PRB ONLY
+	echo "@/data/prb/monolith/inw_acd_cli/.lock"	#PRB ONLY
+	echo "@/data/prb/monolith/inw_acd_cli/log"	#PRB ONLY
 } > $install_dir_cfg/inw_acd_cli.watch
 # gotta jump through hoops to get the config file sourced. inside & outside {}
 {
