@@ -14,6 +14,7 @@ Now that you have everything backed up, make sure you have inotify-tools install
 Now download the files here into a directory (I use ~/inw_acd_cli). Make the <code>setup.sh</code> file executable (<code>chmod 744 setup.sh</code>). Run <code>setup.sh</code> and answer the prompts, giving the script root permissions where requested*. Run <code>inw_acd_cli.sh</code>
 
 To watch activity, <code>tail -f ~/inw_acd_cli/log/inw_acd_cli.log</code> The script &s itself into the background. The log file looks like:
+
 <code>2016/05/24 04:33:25 - 02170: inw_acd_cli.sh started
 2016/05/24 04:33:48 - 02170/02173: /data/prb/monolith/inw_acd_cli/4913 is already gone, probably a temp file.
 2016/05/24 04:33:48 - 02170/02173: /data/prb/monolith/inw_acd_cli/inw_acd_cli_ul.sh (4.0K), Syncing, mkdir, Uploading, scanning, Done at 2016/05/24 04:34:03!
