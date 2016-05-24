@@ -60,7 +60,7 @@ if [ ! -e "$sync_lock" ]; then
 	fi
 fi
 echo -n "mkdir, "
-acd_cli mkdir --parents "$destination" > $log_file 2>&1 &
+acd_cli mkdir --parents "$destination" >> $log_file 2>&1 &
 PID=$!
 wait $PID 
 if [[ $dest_test -eq 1 ]]; then
