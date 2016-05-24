@@ -19,7 +19,7 @@ For a more detailed explination, see https://github.com/peterberbec/inw_acd_cli/
 
 *: I don't take root permissions lightly, but this is necissary. Here is a detailed explination of every <code>sudo</code> in the setup scripts.
 
-1. We place a symbolic link with the script into the user defined directory (it defaults to /usr/local/bin)
+We place a symbolic link with the script into the user defined directory (it defaults to /usr/local/bin)
 
 the command run is: 
 
@@ -29,7 +29,7 @@ the command run is:
     
 <code>$ln_dir</code> is user-defined as the directory to place the symlink into. it defaults to <code>/usr/local/bin</code>
 
-2. If necissary, we update the <code>fs.inotify.max_user_watches</code> setting in <code>/etc/sysctl.conf</code>
+If necissary, we update the <code>fs.inotify.max_user_watches</code> setting in <code>/etc/sysctl.conf</code>
 
 I needed to increase it it to 4,194,304, you may not have to at all. I have 1,983,236 files on my drive.
    
@@ -37,6 +37,6 @@ I needed to increase it it to 4,194,304, you may not have to at all. I have 1,98
     
 <code>$m_u_w</code> is user-defined. It defaults to the current value of <code>/proc/sys/fs/inotify/max_user_watches</code>
 
-3. If necissary, we implement the <code>sysctl.conf</code> update immediately.
+If necissary, we implement the <code>sysctl.conf</code> update immediately.
 
 the command run is: <code>sudo sysctl -p /etc/sysctl.conf</code>
