@@ -26,7 +26,7 @@ Format only outputs the path and filename, we don't care about the other items a
 
 -m = monitor, keep watching even after the first event
 
--ee close_write,moved_to = watch files that were closed & writen to, and files that were moved to the watched directory.
+-e close_write,moved_to = watch files that were closed & writen to, and files that were moved to the watched directory.
 
 The watch_file is created by setup parsing the user's input. The output of inotifywait is piped into a while loop reading every line of output. Every line contains the path and filename of a file to be uploaded. We queue up if another file is being uploaded. Once it's our turn, we spawn inw_acd_cli_ul.sh
 
