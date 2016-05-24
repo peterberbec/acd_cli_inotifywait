@@ -22,7 +22,7 @@ log_file=$log_dir/upload.$PID_MAIN.log
 filename=$1
 sync_lock=$lock_dir/acd_sync.lock
 destination=$2
-dest_temp=`sed s:/data::g <<< $(dirname "${filename}")`
+dest_temp=`sed s:$base_name::g <<< $(dirname "${filename}")`
 if [[ -z "${destination// }" ]]; then
 	destination=`sed s:$base_name::g <<< "$filename"`
 	dest_test=1
