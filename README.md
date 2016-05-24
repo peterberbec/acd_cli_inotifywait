@@ -20,8 +20,12 @@ For a more detailed explination, see https://github.com/peterberbec/inw_acd_cli/
 *: I don't take root permissions lightly, but this is necissary. Here is a detailed explination of every <code>sudo</code> in the setup scripts.
 
   1. We place a symbolic link with the script into the user defined directory (it defaults to /usr/local/bin)
-    the command run is: <code>sudo ln -s "$install_dir_cfg/inw_acd_cli.sh" "$ln_dir"</code>
+    the command run is: 
+
+<code>sudo ln -s "$install_dir_cfg/inw_acd_cli.sh" "$ln_dir"</code>
+
     <code>$install_dir_cfg</code> is user-defined as the directory inw_acd_cli is installed to. it defaults to <code>~/inw_acd_cli</code>
+    
     <code>$ln_dir</code> is user-defined as the directory to place the symlink into. it defaults to <code>/usr/local/bin</code>
 
   2. If necissary, we update the <code>fs.inotify.max_user_watches</code> setting in <code>/etc/sysctl.conf</code>
