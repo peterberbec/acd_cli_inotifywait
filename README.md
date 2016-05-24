@@ -14,7 +14,7 @@ To watch activity, <code>tail -f ~/inw_acd_cli/log/inw_acd_cli.log</code>
 
 *: Root is needed for the following:
   1. to place a symbolic link with the script into the user defined directory (it defaults to /usr/local/bin)
-    the command run is: <code>sudo ln -s "$install_dir_cfg/inw_acd_cli.sh" "$ln_dir"
+    the command run is: <code>sudo ln -s "$install_dir_cfg/inw_acd_cli.sh" "$ln_dir"</code>
   2. if requested, to update the fs.inotify.max_user_watches setting in /etc/sysctl.conf</code>
     I needed to update it to 4194304
     the command run is: <code>sudo echo "fs.inotify.max_user_watches=$m_u_w" >> /etc/sysctl.conf</code>
