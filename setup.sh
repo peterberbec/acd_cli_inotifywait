@@ -38,10 +38,6 @@ mkdir $install_dir_cfg/.lock
 	echo "$watch_dir"
 	echo "@$install_dir_cfg/.lock"
 	echo "@$install_dir_cfg/.log"
-	echo "@/data/torrents/incomplete" 		#PRB ONLY
-	echo "@/data/torrents/incompletepieces" 	#PRB ONLY
-	echo "@/data/prb/monolith/inw_acd_cli/.lock"	#PRB ONLY
-	echo "@/data/prb/monolith/inw_acd_cli/log"	#PRB ONLY
 } > $install_dir_cfg/inw_acd_cli.watch
 # gotta jump through hoops to get the config file sourced. inside & outside {}
 {
