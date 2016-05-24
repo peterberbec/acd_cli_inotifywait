@@ -30,7 +30,7 @@ Format only outputs the path and filename, we don't care about the other items a
 
 The watch_file is created by setup parsing the user's input. The output of inotifywait is piped into a while loop reading every line of output. Every line contains the path and filename of a file to be uploaded. We queue up if another file is being uploaded. Once it's our turn, we spawn inw_acd_cli_ul.sh
 
-Once in inw_acd_cli_ul.sh, we do some sanity checks (lock files, correct variables etc) and parse the file into source path & file and destination path. if the file is /data/downloads/cute_cats.m4v, we upload it to /downloads/totally_not_porn.m4v. Next we check the last time acd_cli synced. If under 10 minutes, we skip it. 
+Once in inw_acd_cli_ul.sh, we do some sanity checks (lock files, correct variables etc) and parse the file into source path & file and destination path. if the file is /data/downloads/cute_cats.m4v, we upload it to /downloads/cute_cats.m4v. Next we check the last time acd_cli synced. If under 10 minutes, we skip it. 
 
 I then create the directory the file exists in, and all parent directories. It takes just as much time for a failed directory creation as to test if we need to create the directories, so I just do it even if it throws an error. File /data/taxes/2015/Quickbooks/fluffly_bunnies.mp4 makes us create /taxes, /taxes/2015 and /taxes/2015/Quickbooks. Anyone who knows a better way to do this, please let me know!
 
