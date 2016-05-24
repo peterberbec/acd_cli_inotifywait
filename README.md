@@ -11,7 +11,7 @@ Now that you have everything backed up, make sure you have inotify-tools install
 Now download the files here into a directory (I use ~/inw_acd_cli). Make the <code>setup.sh</code> file executable (<code>chmod 744 setup.sh</code>). Run <code>setup.sh</code> and answer the prompts, giving the script root permissions where requested*. Run <code>inw_acd_cli.sh</code>
 To watch activity, <code>tail -f ~/inw_acd_cli/log/inw_acd_cli.log</code> The script &s itself into the background.
 
-For a more detailed explination, see Details.md
+For a more detailed explination, see https://github.com/peterberbec/inw_acd_cli/blob/master/Details.md
 
 *: I don't take root permissions lightly, but this is necissary. Here is a detailed explination of every <code>sudo</code> in the setup scripts.
   1. We place a symbolic link with the script into the user defined directory (it defaults to /usr/local/bin)
